@@ -123,6 +123,7 @@ func main() {
 		gitSetAuthor = fs.Bool("git-set-author", false, "if set, the author of git commits will reflect the user who initiated the commit and will differ from the git committer.")
 		gitLabel     = fs.String("git-label", "", "label to keep track of sync progress; overrides both --git-sync-tag and --git-notes-ref")
 		gitSecret    = fs.Bool("git-secret", false, `if set, git-secret will be run on every git checkout. A gpg key must be imported using  --git-gpg-key-import or by mounting a keyring containing it directly`)
+		gitHooksPath	  = fs.String("git-hookspath", false, `if set, will execute githook within the  directory`)
 		sopsEnabled  = fs.Bool("sops", false, `if set, decrypt SOPS-encrypted manifest files with before syncing them. Provide decryption keys in the same way you would provide them for the sops binary. Be aware that manifests generated with .flux.yaml are not automatically decrypted`)
 		// Old git config; still used if --git-label is not supplied, but --git-label is preferred.
 		gitSyncTag     = fs.String("git-sync-tag", defaultGitSyncTag, fmt.Sprintf("tag to use to mark sync progress for this cluster (only relevant when --sync-state=%s)", fluxsync.GitTagStateMode))
@@ -285,6 +286,7 @@ func main() {
 
 		gitRelatedFlags := []string{
 			"git-user",
+			"git-hookspath",
 			"git-email",
 			"git-sync-tag",
 			"git-set-author",
@@ -631,6 +633,7 @@ func main() {
 	gitRemote := git.Remote{URL: *gitURL}
 	gitConfig := git.Config{
 		Paths:       *gitPath,
+		HooksPath: *gitHooksPath,
 		Branch:      *gitBranch,
 		NotesRef:    *gitNotesRef,
 		UserName:    *gitUser,
@@ -665,6 +668,7 @@ func main() {
 		"set-author", *gitSetAuthor,
 		"git-secret", *gitSecret,
 		"sops", *sopsEnabled,
+		"git-hookspath", *gitHooksPath,
 	)
 
 	var jobs *job.Queue

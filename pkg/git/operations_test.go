@@ -261,7 +261,7 @@ func createRepo(dir string, subdirs []string) error {
 	if err = execCommand("git", "-C", dir, "init"); err != nil {
 		return err
 	}
-	if err := config(context.Background(), dir, "operations_test_user", "example@example.com"); err != nil {
+	if err := config(context.Background(), dir, "operations_test_user", "example@example.com", ".git/hooks"); err != nil {
 		return err
 	}
 

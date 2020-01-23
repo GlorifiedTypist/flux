@@ -45,10 +45,11 @@ type gitCmdConfig struct {
 	out io.Writer
 }
 
-func config(ctx context.Context, workingDir, user, email string) error {
+func config(ctx context.Context, workingDir, user, email, hooksPath string) error {
 	for k, v := range map[string]string{
 		"user.name":  user,
 		"user.email": email,
+		"core.hookspath", hooksPath,
 	} {
 		args := []string{"config", k, v}
 		if err := execGitCmd(ctx, args, gitCmdConfig{dir: workingDir}); err != nil {

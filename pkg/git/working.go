@@ -22,6 +22,7 @@ type Config struct {
 	SigningKey  string
 	SetAuthor   bool
 	SkipMessage string
+	HooksPath   string
 }
 
 // Checkout is a local working clone of the remote repo. It is
@@ -67,7 +68,7 @@ func (r *Repo) Clone(ctx context.Context, conf Config) (*Checkout, error) {
 		return nil, err
 	}
 
-	if err := config(ctx, repoDir, conf.UserName, conf.UserEmail); err != nil {
+	if err := config(ctx, repoDir, conf.UserName, conf.UserEmail, conf.HooksPath); err != nil {
 		os.RemoveAll(repoDir)
 		return nil, err
 	}
