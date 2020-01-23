@@ -49,7 +49,7 @@ func config(ctx context.Context, workingDir, user, email, hooksPath string) erro
 	for k, v := range map[string]string{
 		"user.name":  user,
 		"user.email": email,
-		"core.hookspath", hooksPath,
+		"core.hookspath": hooksPath,
 	} {
 		args := []string{"config", k, v}
 		if err := execGitCmd(ctx, args, gitCmdConfig{dir: workingDir}); err != nil {
